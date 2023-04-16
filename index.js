@@ -46,7 +46,7 @@ app.use('/success', (req, res) => {
 
 // Agrega credenciales
 mercadopago.configure({
-    access_token: "APP_USR-816342252878191-041518-8b145e9b1e77c39ef19437da48f11aa5-584407013",
+    access_token: "",
 });
 
 
