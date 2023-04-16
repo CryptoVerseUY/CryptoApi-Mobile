@@ -46,6 +46,7 @@ app.use('/success', (req, res) => {
 
 // Agrega credenciales
 mercadopago.configure({
+    // INGRESAR TOKEN
     access_token: "",
 });
 
