@@ -1,6 +1,7 @@
 import express, { json } from 'express';
 import cors from 'cors'
 import mercadopago from 'mercadopago';
+import request from 'request';
 
 const app = express();
 
@@ -59,7 +60,7 @@ const clientSecret = 'EDACidqNr6qTeU9HAIygNq1664iutHGKDjt_q6Bs_wQcTqp8joCq6rM5hb
 const baseUrl = 'https://api.sandbox.paypal.com'; // Cambiar a 'https://api.paypal.com' en producción
 
 // Ruta para crear un pago
-app.get('/create-payment', (req, res) => {
+app.post('/create-payment', (req, res) => {
     const payment = {
         intent: 'sale',
         payer: {
@@ -72,7 +73,7 @@ app.get('/create-payment', (req, res) => {
         transactions: [
             {
                 amount: {
-                    total: '10.00', // Monto del pago
+                    total: req.body.price, // Monto del pago
                     currency: 'USD' // Moneda del pago
                 },
                 description: 'Ejemplo de pago con PayPal' // Descripción del pago
@@ -94,7 +95,7 @@ app.get('/create-payment', (req, res) => {
             if (error) {
                 res.status(500).send({ error: 'Error al crear el pago' });
             } else {
-                res.send({ approvalUrl: body.links.find(link => link.rel === 'approval_url').href });
+                res.json({ link: body.links.find(link => link.method === 'REDIRECT').href });
             }
         }
     );
